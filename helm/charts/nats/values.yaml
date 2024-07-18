@@ -282,14 +282,20 @@ config:
   #     paths should be relative to /etc/nats-config/nats.conf
   # example:
   #
-  #   merge:
-  #     $include: ./my-config.conf
-  #     zzz$include: ./my-config-last.conf
-  #     server_name: nats
-  #     authorization:
-  #       token: << $TOKEN >>
-  #     jetstream:
-  #       max_memory_store: << 1GB >>
+  merge:
+    # $include: ./my-config.conf
+    # zzz$include: ./my-config-last.conf
+    server_name: innowise-nats
+    accounts:
+      {
+        $SYS: { users: [{ user: sys-user, password: sys-pass }] },
+        foo: { users: [{ user: foo1, password: foo1 }, { user: dummy1, password: dummy1 }] },
+        bar: { users: [{ user: bar1, password: bar1 }] }
+      }
+    # authorization:
+    #   token: iR3Redmsdh2pG7IqhMZJbqKAlcVm8ljW9VIIiy0xdAEewO5ooKLiIAKamG0pZAld
+    # jetstream:
+    #   max_memory_store: << 1GB >>
   #
   # will yield the config:
   # {
@@ -303,7 +309,7 @@ config:
   #   "server_name": "nats",
   #   include ./my-config-last.conf;
   # }
-  merge: {}
+  # merge: {}
   patch: []
 
 ############################################################
@@ -363,7 +369,7 @@ reloader:
   # all nats container volume mounts with the following prefixes
   # will be mounted into the reloader container
   natsVolumeMountPrefixes:
-  - /etc/
+    - /etc/
 
   # merge or patch the container
   # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#container-v1-core
@@ -403,7 +409,6 @@ promExporter:
     patch: []
     # defaults to "{{ include "nats.fullname" $ }}"
     name:
-
 
 ############################################################
 # service
@@ -510,7 +515,6 @@ serviceAccount:
   patch: []
   # defaults to "{{ include "nats.fullname" $ }}"
   name:
-
 
 ############################################################
 # natsBox
@@ -623,7 +627,6 @@ natsBox:
     patch: []
     # defaults to "{{ include "nats.fullname" $ }}-box"
     name:
-
 
 ################################################################################
 # Extra user-defined resources
