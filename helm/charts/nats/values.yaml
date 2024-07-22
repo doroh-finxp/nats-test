@@ -245,7 +245,7 @@ config:
     port: 65432
 
   resolver:
-    enabled: false
+    enabled: true
     dir: /data/resolver
 
     ############################################################
@@ -258,14 +258,17 @@ config:
 
       # merge or patch the pvc
       # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#persistentvolumeclaim-v1-core
-      merge: {}
+      merge: {
+      }
       patch: []
       # defaults to "{{ include "nats.fullname" $ }}-resolver"
       name:
 
     # merge or patch the resolver
     # https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/resolver
-    merge: {}
+    merge: {
+    
+    }
     patch: []
 
   # adds a prefix to the server name, which defaults to the pod name
@@ -285,13 +288,13 @@ config:
   merge:
     # $include: ./my-config.conf
     # zzz$include: ./my-config-last.conf
-    server_name: innowise-nats
-    accounts:
-      {
-        $SYS: { users: [{ user: sys-user, password: sys-pass }] },
-        foo: { users: [{ user: foo1, password: foo1 }, { user: dummy1, password: dummy1 }] },
-        bar: { users: [{ user: bar1, password: bar1 }] }
-      }
+    server_name: nats-test1
+    # accounts:
+    #   {
+    #     $SYS: { users: [{ user: sys-user, password: sys-pass }] },
+    #     foo: { users: [{ user: foo1, password: foo1 }, { user: dummy1, password: dummy1 }] },
+    #     bar: { users: [{ user: bar1, password: bar1 }] }
+    #   }
     # authorization:
     #   token: iR3Redmsdh2pG7IqhMZJbqKAlcVm8ljW9VIIiy0xdAEewO5ooKLiIAKamG0pZAld
     # jetstream:
