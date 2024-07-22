@@ -82,7 +82,7 @@ config:
     patch: []
 
   jetstream:
-    enabled: false
+    enabled: true
 
     fileStore:
       enabled: true
@@ -246,8 +246,8 @@ config:
 
   resolver:
     enabled: true
-    dir: /data/resolver
-
+    dir: "/data/resolver"
+    # type: full
     ############################################################
     # stateful set -> volume claim templates -> resolver pvc
     ############################################################
@@ -258,18 +258,17 @@ config:
 
       # merge or patch the pvc
       # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#persistentvolumeclaim-v1-core
-      merge: {
-      }
+      merge: {}
       patch: []
       # defaults to "{{ include "nats.fullname" $ }}-resolver"
       name:
 
-    # merge or patch the resolver
-    # https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/resolver
-    merge: {
+  #   # merge or patch the resolver
+  #   # https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/resolver
+    merge: 
+      type: full
     
-    }
-    patch: []
+  #   patch: []
 
   # adds a prefix to the server name, which defaults to the pod name
   # helpful for ensuring server name is unique in a super cluster
@@ -288,12 +287,17 @@ config:
   merge:
     # $include: ./my-config.conf
     # zzz$include: ./my-config-last.conf
+    
     server_name: nats-test1
+    operator: eyJ0eXAiOiJKV1QiLCJhbGciOiJlZDI1NTE5LW5rZXkifQ.eyJqdGkiOiI1VURKRFM2NEVBUDdUQ0hGRjQzTlBKR01ERkQ1WjZDRkxMNVBGRFRBWFZUUlg0UDdMQ0lRIiwiaWF0IjoxNzIxNjM4NzIzLCJpc3MiOiJPQjQzU0UySVFHN1hWR1pZUVozUEM3T1JHWURGQVBVRFpGRUlMQ0FEUURCWUZHSkVDUkFCSVBQSiIsIm5hbWUiOiJvcGVyYXRvcjEiLCJzdWIiOiJPQjQzU0UySVFHN1hWR1pZUVozUEM3T1JHWURGQVBVRFpGRUlMQ0FEUURCWUZHSkVDUkFCSVBQSiIsIm5hdHMiOnsib3BlcmF0b3Jfc2VydmljZV91cmxzIjpbIm5hdHM6Ly9uYXRzLWNsdXN0ZXIxLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWw6NDIyMiJdLCJzeXN0ZW1fYWNjb3VudCI6IkFBUkxMWFZTWE1LVVFES0JHVFlER0E1V0hJRFBPRk5LUkZGQ09QTzJKQkFZQ1pKM0MyRzJBRUFSIiwidHlwZSI6Im9wZXJhdG9yIiwidmVyc2lvbiI6Mn19.OfLh8u6yVC5U50m7Z8oCnXIXzTvGyjrGnij4OUd-Ro8WplS1PQCp70mJK-6BFG_8idrv-Kz6B9HwaWpzq3WLCQ
+    system_account: AARLLXVSXMKUQDKBGTYDGA5WHIDPOFNKRFFCOPO2JBAYCZJ3C2G2AEAR
+    # resolver_preload: 
+    #   AARLLXVSXMKUQDKBGTYDGA5WHIDPOFNKRFFCOPO2JBAYCZJ3C2G2AEAR: eyJ0eXAiOiJKV1QiLCJhbGciOiJlZDI1NTE5LW5rZXkifQ.eyJqdGkiOiJRMkpCQVBIS0tWTkpFWjRNS0hRQkdHV1hNVTcyQjdCN0dGR1lPTktLSFFFUkdHTlNMN01RIiwiaWF0IjoxNzIxNjM4NzE4LCJpc3MiOiJPQjQzU0UySVFHN1hWR1pZUVozUEM3T1JHWURGQVBVRFpGRUlMQ0FEUURCWUZHSkVDUkFCSVBQSiIsIm5hbWUiOiJTWVMiLCJzdWIiOiJBQVJMTFhWU1hNS1VRREtCR1RZREdBNVdISURQT0ZOS1JGRkNPUE8ySkJBWUNaSjNDMkcyQUVBUiIsIm5hdHMiOnsibGltaXRzIjp7InN1YnMiOi0xLCJkYXRhIjotMSwicGF5bG9hZCI6LTEsImltcG9ydHMiOi0xLCJleHBvcnRzIjotMSwid2lsZGNhcmRzIjp0cnVlLCJjb25uIjotMSwibGVhZiI6LTF9LCJkZWZhdWx0X3Blcm1pc3Npb25zIjp7InB1YiI6e30sInN1YiI6e319LCJhdXRob3JpemF0aW9uIjp7fSwidHlwZSI6ImFjY291bnQiLCJ2ZXJzaW9uIjoyfX0.ru8J6EVe4cWLEcG5VMPyMPrHdKgR9Kq5Z-ZRGQXHwLxDyE9tQh5fOwN-a7CbEClAxj9BB0vWm1_y1c2jQmqbDQ
     # accounts:
     #   {
-    #     $SYS: { users: [{ user: sys-user, password: sys-pass }] },
-    #     foo: { users: [{ user: foo1, password: foo1 }, { user: dummy1, password: dummy1 }] },
-    #     bar: { users: [{ user: bar1, password: bar1 }] }
+    #     $SYS: { users: [{ user: sys-user, password: sys-pass }] }
+    #     # foo: { users: [{ user: foo1, password: foo1 }, { user: dummy1, password: dummy1 }] },
+    #     # bar: { users: [{ user: bar1, password: bar1 }] }
     #   }
     # authorization:
     #   token: iR3Redmsdh2pG7IqhMZJbqKAlcVm8ljW9VIIiy0xdAEewO5ooKLiIAKamG0pZAld
